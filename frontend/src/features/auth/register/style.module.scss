@@ -1,0 +1,79 @@
+@use '@styles/abstracts/variables' as *;
+@use '@styles/abstracts/mixins' as *;
+@use "sass:color";
+
+.register-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: $color-bg;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    font-family: $font-family-base;
+
+    &__title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: black
+    }
+
+    &__form {
+        display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 32px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        &__input {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: transparent;
+            color: black;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease-in-out;
+    
+            &:focus {
+                border-color: #0070f3;
+            }   }
+
+    &__button {
+        padding: 14px;
+        background-color: $color-primary;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-primary, $lightness: -10%);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+
+    &__error {
+        color: $color-error;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+}
