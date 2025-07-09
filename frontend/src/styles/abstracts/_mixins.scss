@@ -1,0 +1,19 @@
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin input-style {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    font-size: $font-size-base;
+    font-family: $font-family-base;
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 5px rgba($color-primary, 0.5);
+    } }
