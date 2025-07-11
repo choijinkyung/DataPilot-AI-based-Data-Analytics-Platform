@@ -1,3 +1,6 @@
+// 먼저 변수 파셜을 불러옴 (네임스페이스 없이)
+@use 'variables' as *;
+
 @mixin flex-center {
     display: flex;
     justify-content: center;

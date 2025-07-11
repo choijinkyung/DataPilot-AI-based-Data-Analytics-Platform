@@ -1,0 +1,20 @@
+@use '@styles/abstracts/variables' as *;
+@use '@styles/abstracts/mixins' as *;
+@use "sass:color";
+
+.wrapper {
+    /* 핵심: flex 자식으로서 남은 공간 전체 차지 */
+    flex: 1 1 auto; // ← 이 한 줄이 100vh보다 안전
+    width: 100%;
+
+    /* 내용 가운데 정렬 */
+    @include flex-center; // mixin: display:flex + 가로/세로 중앙
+    flex-direction: column;
+    text-align: center;
+
+    font-family: $font-family-base;
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    } }
