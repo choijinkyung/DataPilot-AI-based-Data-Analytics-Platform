@@ -1,3 +1,58 @@
 @use '@styles/abstracts/variables' as *;
 @use '@styles/abstracts/mixins' as *;
 @use "sass:color";
+
+.wrapper {
+    @include flex(row, 1.5rem, stretch, stretch);
+}
+
+.leftPane,
+.rightPane {
+    @include card;
+    flex: 1;
+    min-height: 420px;
+}
+
+.listItem {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+        background: rgba(78, 158, 255, 0.15);
+    }
+}
+
+.previewTable {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-collapse: collapse;
+
+    td {
+        border: 1px solid $color-border;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+.bottomBar {
+    margin-top: 1rem;
+    @include flex(row, 1rem, center, space-between);
+}
+
+.btnPrimary {
+    background: $color-primary;
+    border: none;
+    border-radius: $radius;
+    padding: 0.5rem 1.25rem;
+    color: #fff;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}

@@ -14,9 +14,31 @@
     border-radius: 4px;
     font-size: $font-size-base;
     font-family: $font-family-base;
+    background-color: $color-bg;
+    color: $font-color-base;
+    transition: border-color 0.2s ease-in-out;
+
 
     &:focus {
         outline: none;
         border-color: $color-primary;
         box-shadow: 0 0 5px rgba($color-primary, 0.5);
-    } }
+    }
+}
+
+/* styles/_mixins.scss */
+@mixin flex($dir: row, $gap: 0.5rem, $align: flex-start, $justify: flex-start) {
+    display: flex;
+    flex-direction: $dir;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin card {
+    background: $color-bg;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    padding: $spacing;
+    color: $font-color-base;
+}

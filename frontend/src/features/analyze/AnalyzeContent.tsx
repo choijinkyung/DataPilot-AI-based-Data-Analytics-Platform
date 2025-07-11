@@ -1,127 +1,134 @@
-import React, { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import styles from './Analyze.module.scss'
+// components/AnalysisContent.tsx
+import React from 'react';
+import styles from './Analyze.module.scss';
 
-// -------------------------------
-// AnalyzeContent (UI + 최소 비즈니스 로직)
-// -------------------------------
-function AnalyzeContent() {
-  const [file, setFile] = useState<File | null>(null)
-  const [validation, setValidation] = useState<string[]>([])
-  const [progress, setProgress] = useState<number>(0)
-  const [previewRows, setPreviewRows] = useState<string[][]>([])
+type Dataset = { id: string; name: string; preview: string[][] };
 
-  // 파일 Drag & Drop or Click
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (!acceptedFiles.length) return
-    const candidate = acceptedFiles[0]
-    setFile(candidate)
-    validateFile(candidate)
-    generatePreview(candidate)
-  }, [])
+type Props = {
+  datasets: Dataset[];
+  selectedId: string | null;
+  onSelect: (id: string) => void;
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      'text/csv': ['.csv'],
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-      'application/vnd.ms-excel': ['.xls']
-    },
-    multiple: false
-  })
+  analysisTypes: string[];
+  selectedType: string;
+  onTypeChange: (t: string) => void;
 
-  // 간단한 유효성 검사 (CSV 컬럼수 체크 등 – 데모용)
-  const validateFile = (f: File) => {
-    const newVal: string[] = []
-    if (f.size === 0) newVal.push('📛 파일이 비어 있습니다.')
-    // 기타 확장자 검사
-    const ext = f.name.split('.').pop()?.toLowerCase()
-    if (ext && !['csv', 'xls', 'xlsx'].includes(ext)) newVal.push('📛 지원하지 않는 확장자입니다.')
-    setValidation(newVal.length ? newVal : ['✅ 형식 확인 완료'])
-  }
+  columns: string[];
+  selectedColumns: string[];
+  onColumnToggle: (c: string) => void;
 
-  // CSV 첫 5줄 미리보기 (Excel → 생략)
-  const generatePreview = (f: File) => {
-    const reader = new FileReader()
-    reader.onload = e => {
-      const text = e.target?.result as string
-      const rows = text.split(/\r?\n/).slice(0, 5).map(r => r.split(','))
-      setPreviewRows(rows)
-    }
-    reader.readAsText(f)
-  }
+  params: Record<string, string>;
+  onParamChange: (k: string, v: string) => void;
 
-  // 업로드 버튼 클릭 → 가짜 progress
-  const handleUpload = () => {
-    if (!file) return
-    setProgress(0)
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          return 100
-        }
-        return prev + 10
-      })
-    }, 150)
-  }
+  onRequest: () => void;
+  loading: boolean;
+};
+
+export default function AnalysisContent({
+  datasets,
+  selectedId,
+  onSelect,
+  analysisTypes,
+  selectedType,
+  onTypeChange,
+  columns,
+  selectedColumns,
+  onColumnToggle,
+  params,
+  onParamChange,
+  onRequest,
+  loading,
+}: Props) {
+  const selData = datasets.find(d => d.id === selectedId);
 
   return (
-    <div className={styles.container}>
-      {/* 드래그&드롭 영역 */}
-      <section {...getRootProps()} className={styles.dropArea}>
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>📂 파일을 여기에 놓아주세요…</p>
-        ) : (
-          <p>📂 <span className={styles.highlight}>여기로 파일을 드래그</span> 하세요<br/>또는 <span className={styles.btnFake}>파일 선택</span> 버튼</p>
-        )}
-      </section>
-
-      {/* 유효성 결과 */}
-      {file && (
-        <section className={styles.validationBox}>
-          <h3>✅ 유효성 체크 결과</h3>
+    <div>
+      <div className={styles.wrapper}>
+        {/* 좌측 – 데이터 목록 */}
+        <div className={styles.leftPane}>
+          <h3>📁 업로드한 데이터</h3>
           <ul>
-            {validation.map((v, i) => (
-              <li key={i}>{v}</li>
+            {datasets.map(ds => (
+              <li
+                key={ds.id}
+                className={`${styles.listItem} ${ds.id === selectedId ? styles.active : ''}`}
+                onClick={() => onSelect(ds.id)}
+              >
+                {ds.name}
+              </li>
             ))}
           </ul>
-        </section>
-      )}
 
-      {/* 진행률 */}
-      {progress > 0 && (
-        <section className={styles.progressBarWrapper}>
-          <div className={styles.progressBar} style={{ width: `${progress}%` }} />
-          <span>{progress}%</span>
-        </section>
-      )}
-
-      {/* 데이터 미리보기 */}
-      {previewRows.length > 0 && (
-        <section className={styles.previewBox}>
-          <h3>🔍 데이터 미리보기 (상위 5개 행)</h3>
-          <table>
-            <tbody>
-              {previewRows.map((row, rIdx) => (
-                <tr key={rIdx}>
-                  {row.map((cell, cIdx) => (
-                    <td key={cIdx}>{cell}</td>
+          {selData && (
+            <>
+              <h4>미리보기</h4>
+              <table className={styles.previewTable}>
+                <tbody>
+                  {selData.preview.map((row, i) => (
+                    <tr key={i}>
+                      {row.map((cell, j) => (
+                        <td key={j}>{cell}</td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
+
+        {/* 우측 – 분석 파라미터 */}
+        <div className={styles.rightPane}>
+          <h3>🧠 분석 파라미터</h3>
+
+          {/* 분석 종류 */}
+          <label>
+            분석 종류
+            <select value={selectedType} onChange={e => onTypeChange(e.target.value)}>
+              {analysisTypes.map(t => (
+                <option key={t}>{t}</option>
               ))}
-            </tbody>
-          </table>
-        </section>
-      )}
+            </select>
+          </label>
 
-      {/* 업로드 버튼 */}
-      <button className={styles.uploadBtn} onClick={handleUpload} disabled={!file || progress > 0 && progress < 100}>
-        ▶️ 업로드하기
-      </button>
+          {/* 분석 대상 컬럼 */}
+          <details open>
+            <summary>분석 대상 컬럼</summary>
+            {columns.map(c => (
+              <label key={c} style={{ display: 'block', marginTop: '.25rem' }}>
+                <input
+                  type="checkbox"
+                  checked={selectedColumns.includes(c)}
+                  onChange={() => onColumnToggle(c)}
+                />
+                {c}
+              </label>
+            ))}
+          </details>
+
+          {/* 추가 파라미터 */}
+          <label>
+            학습률(예시)
+            <input
+              type="number"
+              value={params.learningRate ?? ''}
+              onChange={e => onParamChange('learningRate', e.target.value)}
+              style={{ width: '100%' }}
+            />
+          </label>
+        </div>
+      </div>
+
+      {/* 하단 버튼 */}
+      <div className={styles.bottomBar}>
+        <button
+          className={styles.btnPrimary}
+          onClick={onRequest}
+          disabled={!selectedId || loading}
+        >
+          {loading ? '⏳ 분석 중…' : '🧪 분석 요청하기'}
+        </button>
+      </div>
     </div>
-  )
+  );
 }
-
-export default AnalyzeContent
