@@ -2,7 +2,7 @@
 @use '@styles/abstracts/mixins' as *;
 @use "sass:color";
 
-.register-form {
+.login-form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,30 +24,31 @@
 
     &__form {
         display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-            max-width: 400px;
-            padding: 32px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        max-width: 400px;
+        padding: 32px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
-        &__input {
-            padding: 10px 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: transparent;
-            color: black;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s ease-in-out;
-    
-            &:focus {
-                border-color: #0070f3;
-            }   }
+    &__input {
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: transparent;
+        color: black;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s ease-in-out;
+
+        &:focus {
+            border-color: #0070f3;
+        }
+    }
 
     &__button {
         padding: 14px;
