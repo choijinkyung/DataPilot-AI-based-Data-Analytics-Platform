@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import { useLoginStore } from './useLoginStore'
 import LoginForm from './LoginForm'
+import {useNavigate} from 'react-router-dom'
+
 
 export default function LoginPage() {
+    const router = useNavigate();
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, loading } = useLoginStore()
@@ -18,6 +22,7 @@ export default function LoginPage() {
   
           alert(res.data.message); // 서버에서 받은 message 띄우기
           // 로그인 성공 후 추가 작업 (예: 리다이렉트)
+          router('/'); // 홈으로 리다이렉트
         } else {
           // 실패 시에도 JSON 파싱해서 메시지 보여주기
    
@@ -25,7 +30,6 @@ export default function LoginPage() {
         }
       } catch (error) {
         console.error('Login error:', error);
-        alert(res.data.message );
       }
   }
 
