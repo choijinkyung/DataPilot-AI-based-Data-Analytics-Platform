@@ -13,7 +13,8 @@ const Layout = () => {
           <li><Link to="/upload">Upload</Link></li>
           <li><Link to="/analyze">Analyze</Link></li>
           <li><Link to="/results">Results</Link></li>
-          <li><Link to="/user">User</Link></li>
+          <li><Link to="/jobs">Jobs</Link></li>
+          <li><Link to="/profile">User</Link></li>
         </ul>
       </nav>
 

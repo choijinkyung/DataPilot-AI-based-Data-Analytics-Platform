@@ -9,7 +9,9 @@ import  HomePage  from '@features/home/HomePage';
 import UploadPage  from '@features/upload/UploadPage';
 import AnalyzePage  from '@features/analyze/AnalyzePage';
 import ResultsPage  from '@features/results/ResultsPage';
-// import UserPage  from '@features/user/UserPage';
+import JobsPage  from '@features/jobs/JobsPage';
+import UsersPage  from '@features/users/admin/UsersPage';
+import MyProfilePage from '@features/users/profile/ProfilePage';
 
 export const routes: RouteObject[] = [
   /* ─────────── 인증이 필요한 영역 ─────────── */
@@ -25,7 +27,9 @@ export const routes: RouteObject[] = [
       { path: 'upload',  element: <UploadPage /> },
       { path: 'analyze', element: <AnalyzePage /> },
       { path: 'results', element: <ResultsPage /> },
-      // { path: 'user',    element: <UserPage /> },
+      { path: 'jobs', element: <JobsPage /> },
+      { path: 'profile',    element: <MyProfilePage /> },
+      { path: 'admin/users',    element: <UsersPage /> },
     ],
   },
 

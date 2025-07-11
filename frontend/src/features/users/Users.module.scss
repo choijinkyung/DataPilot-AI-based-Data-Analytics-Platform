@@ -1,0 +1,40 @@
+@use '@styles/abstracts/variables' as *;
+@use '@styles/abstracts/mixins' as *;
+@use "sass:color";
+
+.card {
+    @include card;
+    margin-bottom: $gap;
+}
+
+.input {
+    width: 100%;
+    padding: .5rem;
+    border-radius: $radius/2;
+    border: 1px solid $clr-border;
+}
+
+.btn {
+    background: $clr-primary;
+    color: $clr-text;
+    padding: .4rem 1rem;
+    border: none;
+    border-radius: $radius/2;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: .4;
+        cursor: not-allowed;
+    }
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        border: 1px solid $clr-border;
+        padding: .35rem;
+    }
+}
