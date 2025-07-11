@@ -1,0 +1,60 @@
+@use '@styles/abstracts/variables' as *;
+@use '@styles/abstracts/mixins' as *;
+@use "sass:color";
+
+.wrapper {
+    @include card;
+}
+
+.item {
+    @include flex(row, 0.75rem);
+    border-left: 4px solid $clr-border;
+    padding-left: 0.75rem;
+    margin-bottom: 0.75rem;
+
+    &.running {
+        border-color: $clr-primary;
+    }
+
+    &.success {
+        border-color: $clr-success;
+    }
+
+    &.failed {
+        border-color: $clr-error;
+    }
+}
+
+.meta {
+    flex: 1;
+}
+
+.status {
+    font-weight: 600;
+
+    &.running {
+        color: $clr-primary;
+    }
+
+    &.success {
+        color: $clr-success;
+    }
+
+    &.failed {
+        color: $clr-error;
+    }
+}
+
+.btn {
+    background: $clr-primary;
+    border: none;
+    border-radius: $radius/2;
+    color: $clr-text;
+    padding: 0.3rem 0.9rem;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}
