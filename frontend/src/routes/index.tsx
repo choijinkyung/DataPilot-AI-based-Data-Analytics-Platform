@@ -6,6 +6,11 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 import { RegisterPage } from '@features/auth/register/RegisterPage';
 import  LoginPage  from '@features/auth/login/LoginPage';
 import  HomePage  from '@features/home/HomePage';
+import UploadPage  from '@features/upload/UploadPage';
+import AnalyzePage  from '@features/analyze/AnalyzePage';
+// import ResultsPage  from '@features/results/ResultsPage';
+// import UserPage  from '@features/user/UserPage';
+
 export const routes: RouteObject[] = [
   /* ─────────── 인증이 필요한 영역 ─────────── */
   {
@@ -17,8 +22,8 @@ export const routes: RouteObject[] = [
     ),
     children: [
       { index: true,  element: <HomePage /> },   // == path: ''
-      // { path: 'upload',  element: <UploadPage /> },
-      // { path: 'analyze', element: <AnalyzePage /> },
+      { path: 'upload',  element: <UploadPage /> },
+      { path: 'analyze', element: <AnalyzePage /> },
       // { path: 'results', element: <ResultsPage /> },
       // { path: 'user',    element: <UserPage /> },
     ],

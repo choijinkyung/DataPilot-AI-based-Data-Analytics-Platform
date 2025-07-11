@@ -1,7 +1,12 @@
 // src/features/home/HomeContent.tsx
 import styles from './Home.module.scss'
+import React from 'react';
 
-export default function HomeContent() {
+type ContentProps = {
+  onCardClick: (path: string) => void;
+};
+
+const HomeContent: React.FC<ContentProps> = ({ onCardClick }) => {
   return (
     <div className={styles.homeContainer}>
       {/* Welcome Section */}
@@ -12,15 +17,15 @@ export default function HomeContent() {
 
       {/* Quick Actions */}
       <section className={styles.quickActions}>
-        <div className={styles.actionCard}>
+        <div className={styles.actionCard}onClick={() => onCardClick('/upload')}>
           <div>🔼</div>
           <span>데이터 업로드</span>
         </div>
-        <div className={styles.actionCard}>
+        <div className={styles.actionCard} onClick={() => onCardClick('/analyze')}>
           <div>🧠</div>
           <span>분석 요청</span>
         </div>
-        <div className={styles.actionCard}>
+        <div className={styles.actionCard}onClick={() => onCardClick('/results')}>
           <div>📈</div>
           <span>분석 결과 보기</span>
         </div>
@@ -54,3 +59,4 @@ export default function HomeContent() {
     </div>
   )
 }
+export default HomeContent;

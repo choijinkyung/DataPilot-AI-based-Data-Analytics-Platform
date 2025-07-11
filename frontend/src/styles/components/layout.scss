@@ -1,35 +1,41 @@
 @use '@styles/abstracts/variables' as *;
 @use '@styles/abstracts/mixins' as *;
+
 // global reset
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
+
 #root {
     /* CRA, Vite 기준 */
     height: 100%;
     /* 필수 */
     display: flex;
     /* 세로 중앙 정렬용 */
-    flex-direction: column; }
+    flex-direction: column;
+}
 
 html,
 body {
     height: 100%;
-    width:100%;
+    width: 100%;
     margin: 0;
     font-family: $font-family-base;
+    color: $font-color-base
 }
 
 // layout wrapper
 .layout {
     @include flex-center; // 예: 가운데 정렬
-    min-height: 100vh; 
+    min-height: 100vh;
 }
+
 input {
-        @include input-style;   // 인풋 통일
+    @include input-style; // 인풋 통일
 }
+
 // ─────────────────────────────
 // Navigation Bar
 // ─────────────────────────────
