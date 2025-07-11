@@ -3,18 +3,136 @@
 @use "sass:color";
 
 .wrapper {
-    /* 핵심: flex 자식으로서 남은 공간 전체 차지 */
-    flex: 1 1 auto; // ← 이 한 줄이 100vh보다 안전
+    flex: 1 1 auto;
     width: 100%;
-
-    /* 내용 가운데 정렬 */
-    @include flex-center; // mixin: display:flex + 가로/세로 중앙
+    height: 100%;
+    @include flex-center;
     flex-direction: column;
     text-align: center;
-
     font-family: $font-family-base;
+}
+
+.homeContainer {
+    flex: 1 1 auto;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: #f9fafb;
+    font-family: $font-family-base;
+}
+
+// Welcome Section
+.welcomeCard {
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 
     h1 {
         font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+}
+
+// Quick Actions
+.quickActions {
+    display: grid; // ✅ 데스크탑에선 grid가 더 깔끔
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .actionCard {
+        background-color: white;
+        border-radius: 12px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        div {
+            font-size: 2rem;
+        }
+
+        span {
+            display: block;
+            margin-top: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+    }
+}
+
+// 최근 작업
+.recentTasks {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+
+    h2 {
+        font-size: 1.25rem;
         margin-bottom: 1rem;
-    } }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            span:first-child {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .timestamp {
+        font-size: 0.875rem;
+        color: #9ca3af;
+    }
+}
+
+// 시스템 공지
+.systemNotice {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+
+    h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    p {
+        font-size: 1rem;
+        color: #4b5563;
+    }
+}

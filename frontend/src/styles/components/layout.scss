@@ -6,10 +6,18 @@
 *::after {
     box-sizing: border-box;
 }
+#root {
+    /* CRA, Vite 기준 */
+    height: 100%;
+    /* 필수 */
+    display: flex;
+    /* 세로 중앙 정렬용 */
+    flex-direction: column; }
 
 html,
 body {
     height: 100%;
+    width:100%;
     margin: 0;
     font-family: $font-family-base;
 }
@@ -59,13 +67,13 @@ input {
 
 main {
     flex-grow: 1;
-    padding-top: $nav-height + 22px; // 64px nav + 22px = 86px (기존 여백)
+    padding-top: $nav-height+22px; // 64px nav + 22px = 86px (기존 여백)
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 
-    height: calc(100vh - $nav-height);
+    height: 100vh;
     width: 100vw;
 }
 
