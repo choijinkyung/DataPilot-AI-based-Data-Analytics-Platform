@@ -18,3 +18,6 @@ export const findUserByEmail = async (data:LoginInput) => {
     },
   });
 };  
+
+export const findUserById = async (id: string) =>
+  prisma.user.findUnique({ where: { id } });

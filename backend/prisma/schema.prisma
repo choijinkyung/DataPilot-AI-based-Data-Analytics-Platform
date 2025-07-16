@@ -14,3 +14,12 @@ model User {
   name      String
   createdAt DateTime @default(now())
 }
+
+model UploadedFile {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  filepath  String
+  mimetype  String
+  size      Int
+  createdAt DateTime @default(now())
+}
