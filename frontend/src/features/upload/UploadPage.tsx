@@ -1,6 +1,7 @@
 // pages/UploadPage.tsx
 import React, { useCallback, useState } from 'react';
 import UploadContent from './UploadContent';
+import {uploadFile} from './UploadApi';
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -44,19 +45,25 @@ export default function UploadPage() {
     reader.readAsText(f);
   };
 
-  // 4) 업로드(가짜 progress)
+  // 4) 업로드
   const handleUpload = () => {
     if (!file) return;
     setProgress(0);
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 150);
+    uploadFile(file, {
+      onProgress: (p: number) => setProgress(p),
+      onSuccess: () => {
+        alert('파일 업로드가 완료되었습니다!');
+        setFile(null);
+        setValidation([]);
+        setProgress(0);
+        setPreviewRows([]);
+      },
+      onError: (err: string) => {
+        alert('업로드 중 오류가 발생했습니다: ' + err);
+        setProgress(0);
+      },
+    });         
+    
   };
 
   /** Dropzone 옵션을 객체로 만들어 Content에 전달 */
