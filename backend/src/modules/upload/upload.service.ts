@@ -2,19 +2,18 @@ import path from 'path'
 import fs from 'fs/promises'
 import { PrismaClient } from '@prisma/client'
 import { fileURLToPath } from 'url'
+import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const uploadDir = path.join(__dirname, '..', 'uploads')
+const uploadDir = path.join(__dirname, '..', 'upload/storage')
 
-export const handleFileUpload = async (file) => {
+export const handleFileUpload = async (file , user) => {
   const savePath = path.join(uploadDir, file.name)
-
   // 디렉터리 존재 확인 및 생성
   await fs.mkdir(uploadDir, { recursive: true })
-
   // 파일 저장
   await file.mv(savePath)
 
@@ -24,7 +23,9 @@ export const handleFileUpload = async (file) => {
       filename: file.name,
       filepath: `/upload/storage/${file.name}`,
       mimetype: file.mimetype,
+      userId:user?.id,
       size: file.size,
+      uploadId: uuidv4(),
     },
   })
 

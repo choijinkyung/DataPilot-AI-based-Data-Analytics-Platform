@@ -14,7 +14,7 @@ export const register = async (req: Request, res: Response) => {
   }
 
   const user = await authService.createUser(parsed.data);
-  return res.status(201).json(user);
+  return res.status(201).json({message:'Register Successfull!'});
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -90,7 +90,8 @@ export const me = async (req: Request, res: Response) => {
 
     const token = auth.split(' ')[1];
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
-    const user = await findUserById(decoded.userId);
+
+    const user = await authService.findUserByEmail(decoded);
 
     if (!user) return res.status(404).json({ message: 'User not found' });
     return res.status(200).json({ user });

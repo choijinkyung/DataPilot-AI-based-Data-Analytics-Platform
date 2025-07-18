@@ -9,7 +9,7 @@ export const uploadFile = async(req,res)=>{
         if (!file) {
             return res.status(400).json({ message: 'No file uploaded' });
         }        
-        const files = await handleFileUpload(file); // This should be defined in your service
+        const files = await handleFileUpload(file,req.user); // This should be defined in your service
 
         if (!files) {
             return res.status(500).json({ message: 'File upload failed' });

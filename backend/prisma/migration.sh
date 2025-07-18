@@ -1,0 +1,1 @@
+npx prisma migration dev --name init-uploaded-file
