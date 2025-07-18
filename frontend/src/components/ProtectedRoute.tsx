@@ -1,13 +1,12 @@
 // src/components/ProtectedRoute.tsx
 import { Navigate } from 'react-router-dom'
-import { useAuthStore } from '@features/auth/authStore'
+import {useLoginStore} from '@features/auth/login/useLoginStore'
 
 export default function ProtectedRoute({ children }: { children: JSX.Element }) {
-  const { isLoggedIn } = useAuthStore()
+  const token = useLoginStore(state => state.token);
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />
+  if (!token) {
+    return <Navigate to="/login" />;
   }
-
   return children
 }

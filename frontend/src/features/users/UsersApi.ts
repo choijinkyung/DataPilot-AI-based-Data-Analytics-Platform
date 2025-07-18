@@ -1,4 +1,3 @@
-// features/users/api/users.ts
 import type { User, Log } from './users.types';
 
 export const fetchUsers = async (): Promise<User[]> =>

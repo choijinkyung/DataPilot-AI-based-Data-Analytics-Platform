@@ -6,7 +6,7 @@ export const useUserStore = create((set) => ({
   fetchUser: async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get('http://localhost:4000/api/user/me', {
+      const res = await axios.get('http://localhost:4000/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -17,23 +17,3 @@ export const useUserStore = create((set) => ({
     }
   },
 }))
-
-type AuthState = {
-    token: string | null
-    isLoggedIn: boolean
-    login: (token: string) => void
-    logout: () => void
-  }
-  
-  export const useAuthStore = create<AuthState>((set) => ({
-    token: localStorage.getItem('token'),
-    isLoggedIn: !!localStorage.getItem('token'),
-    login: (token: string) => {
-      localStorage.setItem('token', token)
-      set({ token, isLoggedIn: true })
-    },
-    logout: () => {
-      localStorage.removeItem('token')
-      set({ token: null, isLoggedIn: false })
-    },
-  }))

@@ -1,8 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware';
 import { loginApi,logoutApi,meApi } from './loginApi'
-import { useAuthStore } from '@features/auth/authStore'
-
 
 export const useLoginStore = create<AuthState>()(
   persist(
@@ -15,9 +13,14 @@ export const useLoginStore = create<AuthState>()(
         try {
           set({ loading: true });        
           const res = await loginApi({ email, password });
-          const { user, token } = res.data;
+          const { user, token, refreshToken } = res.data;
+          if (!refreshToken) {
+            console.warn('⚠️ refreshToken이 응답에 포함되지 않았습니다.');
+          }
           set({ user, token });
           localStorage.setItem('token', token);
+          localStorage.setItem('refreshToken', refreshToken); // ✅ 저장
+
           return res;
         } catch (e: any) {
           alert('로그인 실패: ' + e.message);
@@ -29,24 +32,9 @@ export const useLoginStore = create<AuthState>()(
       logout: async () => {
         await logoutApi();
         set({ user: null, token: '' });
-      },
-
-      restore: async () => {
-        const token = localStorage.getItem('token');
-        if (!token || token.length === 0) {
-          set({ loading: false, token: '' });   // ← token도 빈 값으로 초기화
-          return;
-        }
-        set({ loading: true, token });
-        try {
-          const user = await meApi();
-          if (user) set({ user });
-          else localStorage.removeItem('token');
-        } finally {
-          set({ loading: false });
-        }
-      },
-    }),
-    { name: 'auth-storage' }
-  )
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken'); // ✅ 삭제
+      }
+    }
+  ))
 );

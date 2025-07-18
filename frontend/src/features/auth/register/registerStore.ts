@@ -27,7 +27,7 @@ export const useRegisterStore = create<AuthState>((set) => ({
       set({ loading: true, error: null });
       try {
         const body = JSON.stringify({ email, password, name });
-        const res = await axios.post('/api/users/register',body,{
+        const res = await axios.post('/api/auth/register',body,{
           headers: {
             'Content-Type': 'application/json'
           }});
