@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { useRegisterStore } from './registerStore';
 import { RegisterForm } from './RegisterForm';
-
+import {useNavigate} from 'react-router-dom'
 export const RegisterPage = () => {
+  const router = useNavigate()
   const [form, setForm] = useState({ email: '', password: '', name: '' });
   const { loading, error, register } = useRegisterStore();
 
@@ -14,6 +15,7 @@ export const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await register(form);
+    router('/login')
   };
 
   return (

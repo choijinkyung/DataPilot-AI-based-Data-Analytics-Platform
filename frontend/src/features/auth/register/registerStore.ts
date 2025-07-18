@@ -30,16 +30,10 @@ export const useRegisterStore = create<AuthState>((set) => ({
         const res = await axios.post('/api/auth/register',body,{
           headers: {
             'Content-Type': 'application/json'
-          }});
-  
-        if (!res.ok) {
-         
-          alert(res.data.message);
-          throw new Error(res.data.message || '회원가입 실패');
-        }
+          }});  
+   
         alert(res.data.message);
-        // Reset the form or redirect to login page
-  
+        // Reset the form or redirect to login page  
         set({ loading: false });
       } catch (err: any) {
         set({ loading: false, error: err.message });

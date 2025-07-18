@@ -23,7 +23,11 @@ export const useLoginStore = create<AuthState>()(
 
           return res;
         } catch (e: any) {
-          alert('로그인 실패: ' + e.message);
+          if (e.response && e.response.data && e.response.data.message) {
+            alert('로그인 실패: ' + e.response.data.message);
+          } else {
+            alert('로그인 실패: ' + e.message);
+          }
         } finally {
           set({ loading: false });
         }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type {User} from '../../users/users.types'
+import {useNavigate} from 'react-router-dom'
 
 export const loginApi = async ({ email, password }) => {
   console.log('로그인 요청:', { email, password });
@@ -15,6 +16,7 @@ export const loginApi = async ({ email, password }) => {
 
 
 export const logoutApi = async () => {
+  const router = useNavigate();
   const token = localStorage.getItem('token');
   if (!token) return;
 

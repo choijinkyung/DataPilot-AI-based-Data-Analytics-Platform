@@ -5,6 +5,16 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
 });
 
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      useLoginStore.getState().logout(); // 상태 초기화 + localStorage 삭제
+      router('/login'); // 로그인 페이지로 리다이렉트
+    }
+    return Promise.reject(error);
+  }
+);
 instance.interceptors.request.use((config) => {
   const token = useLoginStore.getState().token;
   if (token) {

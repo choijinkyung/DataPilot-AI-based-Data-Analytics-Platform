@@ -2,12 +2,14 @@
 import React, { useCallback, useState } from 'react';
 import UploadContent from './UploadContent';
 import {uploadFile} from './UploadApi';
+import {useNavigate} from 'react-router-dom'
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [validation, setValidation] = useState<string[]>([]);
   const [progress, setProgress] = useState<number>(0);
   const [previewRows, setPreviewRows] = useState<string[][]>([]);
+  const router = useNavigate();
 
   // 1) 파일 드롭
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -47,16 +49,19 @@ export default function UploadPage() {
 
   // 4) 업로드
   const handleUpload = () => {
+    
     if (!file) return;
     setProgress(0);
     uploadFile(file, {
       onProgress: (p: number) => setProgress(p),
-      onSuccess: () => {
+      onSuccess: (file) => {
         alert('파일 업로드가 완료되었습니다!');
         setFile(null);
         setValidation([]);
         setProgress(0);
         setPreviewRows([]);
+
+        router(`/result?uploadId=${file.uploadId}`);
       },
       onError: (err: string) => {
         alert('업로드 중 오류가 발생했습니다: ' + err);

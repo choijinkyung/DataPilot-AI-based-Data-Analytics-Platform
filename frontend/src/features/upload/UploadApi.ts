@@ -12,7 +12,7 @@ export const uploadFile = async (file: File,options: UploadFileOptions = {}): Pr
     const formData = new FormData();
     formData.append('file', file);
 
-    await axios.post('/api/upload', formData, {
+    const response = await axios.post('/api/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -23,9 +23,8 @@ export const uploadFile = async (file: File,options: UploadFileOptions = {}): Pr
         }
       },
     });
-
-    console.log('파일 업로드 성공:', file.name);
-    onSuccess?.();
+    const {file:uploadedFile}=response.data
+    onSuccess?.(uploadedFile);
   } catch (error: any) {
     console.error('업로드 실패:', error);
     const message = error?.response?.data?.message || error.message || 'Unknown error';
