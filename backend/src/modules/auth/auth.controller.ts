@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { registerSchema } from './user.schema.ts';
+import { registerSchema } from './auth.schema.ts';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import * as userService from './user.service.ts';
+import * as authService from './auth.service.ts';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -13,7 +13,7 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ error: parsed.error.format() });
   }
 
-  const user = await userService.createUser(parsed.data);
+  const user = await authService.createUser(parsed.data);
   return res.status(201).json(user);
 };
 
@@ -23,7 +23,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     console.log('로그인 요청:', { email, password });
     try {
-        const user = await userService.findUserByEmail({ email, password });
+        const user = await authService.findUserByEmail({ email, password });
     
         if (!user) {
           return res.status(401).json({ message: 'Invalid email or password' });
@@ -39,10 +39,15 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_SECRET || 'fallback-secret',
       { expiresIn: '1h' }
     );
-
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.REFRESH_SECRET,
+      { expiresIn: '7d' }
+    );
     return res.status(200).json({
       message: 'Login successful',
       token,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,
@@ -94,3 +99,17 @@ export const me = async (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
+
+export const refresh=async(req:Request, res:Response)=>{
+  const { refreshToken } = req.body;
+  if (!refreshToken) return res.sendStatus(401);
+
+  try{
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+    const newToken = jwt.sign({ userId: decoded.userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return res.json({ token: newToken });
+  }catch(err){
+    return res.status(403).json({ message: 'Invalid refresh token' });
+  }
+}

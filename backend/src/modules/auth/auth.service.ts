@@ -1,5 +1,5 @@
 import prisma from '../../config/db.ts';
-import type { RegisterInput,LoginInput} from './user.schema.ts';
+import type { RegisterInput,LoginInput} from './auth.schema.ts';
 
 export const createUser = async (data: RegisterInput) => {
   return await prisma.user.create({ data });
