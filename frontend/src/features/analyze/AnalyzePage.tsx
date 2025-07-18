@@ -1,6 +1,7 @@
 // pages/AnalysisPage.tsx
 import React, { useState } from 'react';
 import AnalysisContent from './AnalyzeContent';
+import styles from './Analyze.module.scss';
 
 type Dataset = { id: string; name: string; preview: string[][] };
 
@@ -40,20 +41,22 @@ export default function AnalysisPage() {
   };
 
   return (
-    <AnalysisContent
-      datasets={datasets}
-      selectedId={selectedId}
-      onSelect={setSelectedId}
-      analysisTypes={analysisTypes}
-      selectedType={selectedType}
-      onTypeChange={setSelectedType}
-      columns={columns}
-      selectedColumns={selectedCols}
-      onColumnToggle={toggleColumn}
-      params={params}
-      onParamChange={(k, v) => setParams(p => ({ ...p, [k]: v }))}
-      onRequest={handleRequest}
-      loading={loading}
-    />
+    <div className={styles.wrapper}>   
+      <AnalysisContent
+        datasets={datasets}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        analysisTypes={analysisTypes}
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+        columns={columns}
+        selectedColumns={selectedCols}
+        onColumnToggle={toggleColumn}
+        params={params}
+        onParamChange={(k, v) => setParams(p => ({ ...p, [k]: v }))}
+        onRequest={handleRequest}
+        loading={loading}
+      />
+    </div>
   );
 }

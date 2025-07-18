@@ -23,6 +23,7 @@ type Props = {
   onRequest: () => void;
   loading: boolean;
 };
+// 변경 없음: import, Props 등
 
 export default function AnalysisContent({
   datasets,
@@ -43,7 +44,7 @@ export default function AnalysisContent({
 
   return (
     <div>
-      <div className={styles.wrapper}>
+      <div className={styles.container}>
         {/* 좌측 – 데이터 목록 */}
         <div className={styles.leftPane}>
           <h3>📁 업로드한 데이터</h3>
@@ -62,17 +63,19 @@ export default function AnalysisContent({
           {selData && (
             <>
               <h4>미리보기</h4>
-              <table className={styles.previewTable}>
-                <tbody>
-                  {selData.preview.map((row, i) => (
-                    <tr key={i}>
-                      {row.map((cell, j) => (
-                        <td key={j}>{cell}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div style={{ overflowX: 'auto' }}>
+                <table className={styles.previewTable}>
+                  <tbody>
+                    {selData.preview.map((row, i) => (
+                      <tr key={i}>
+                        {row.map((cell, j) => (
+                          <td key={j}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </>
           )}
         </div>
@@ -81,41 +84,45 @@ export default function AnalysisContent({
         <div className={styles.rightPane}>
           <h3>🧠 분석 파라미터</h3>
 
-          {/* 분석 종류 */}
-          <label>
-            분석 종류
+          <fieldset>
+            <legend>분석 종류</legend>
             <select value={selectedType} onChange={e => onTypeChange(e.target.value)}>
               {analysisTypes.map(t => (
                 <option key={t}>{t}</option>
               ))}
             </select>
-          </label>
+          </fieldset>
 
-          {/* 분석 대상 컬럼 */}
-          <details open>
-            <summary>분석 대상 컬럼</summary>
-            {columns.map(c => (
-              <label key={c} style={{ display: 'block', marginTop: '.25rem' }}>
-                <input
-                  type="checkbox"
-                  checked={selectedColumns.includes(c)}
-                  onChange={() => onColumnToggle(c)}
-                />
-                {c}
-              </label>
-            ))}
-          </details>
+          <fieldset className={styles.inlineFieldset}>
+          
+              <legend>분석 대상 컬럼</legend>
+              <div className={styles.checkboxGroup}>
+                {columns.map(c => (
+                  <label key={c} className={styles.checkboxItem}>
+                    <input
+                      type="checkbox"
+                      checked={selectedColumns.includes(c)}
+                      onChange={() => onColumnToggle(c)}
+                    />
+                    {c}
+                  </label>
+                ))}
+              </div>
+      
+          </fieldset>
 
-          {/* 추가 파라미터 */}
-          <label>
-            학습률(예시)
-            <input
-              type="number"
-              value={params.learningRate ?? ''}
-              onChange={e => onParamChange('learningRate', e.target.value)}
-              style={{ width: '100%' }}
-            />
-          </label>
+          <fieldset style={{ marginTop: '1rem' }}>
+            <legend>추가 파라미터</legend>
+            <label>
+              학습률 (예시)
+              <input
+                type="number"
+                value={params.learningRate ?? ''}
+                onChange={e => onParamChange('learningRate', e.target.value)}
+                style={{ width: '100%', marginTop: '.25rem' }}
+              />
+            </label>
+          </fieldset>
         </div>
       </div>
 

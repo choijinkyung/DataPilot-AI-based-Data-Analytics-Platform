@@ -61,7 +61,7 @@ export default function UploadPage() {
         setProgress(0);
         setPreviewRows([]);
 
-        router(`/result?uploadId=${file.uploadId}`);
+        router(`/analyze?uploadId=${file.uploadId}`);
       },
       onError: (err: string) => {
         alert('업로드 중 오류가 발생했습니다: ' + err);
